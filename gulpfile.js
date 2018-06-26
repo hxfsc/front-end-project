@@ -4,10 +4,10 @@ var gulp = require('gulp'),
 var includeFile = require('gulp-file-include'),
     connect = require('gulp-connect'),
     //proxy = require('http-proxy-middleware'),
-    sass = require('gulp-sass'),
     postcss = require('gulp-postcss'),
     autoprefixer = require('autoprefixer'),
     cssnext = require('cssnext'),
+    cssnano = require('cssnano'),
     precss = require('precss');
 
 
@@ -45,7 +45,7 @@ gulp.task('create', function(){
 gulp.task('html', function () {
     gulp.src(__dev.src.html + "*.html")
         .pipe(includeFile({
-                indent: true
+            indent: true
         }))
         .pipe(gulp.dest(__dev.build.html));
 });
@@ -53,18 +53,14 @@ gulp.task('html', function () {
 
 gulp.task('style', function () {
     var processors = [
-        autoprefixer({browsers: ['>1%', 'last 12 version']}),
+        precss,
         cssnext,
-        precss
+        autoprefixer({browsers: ['>1%', 'last 12 version']}),
+        cssnano({
+            reduceIdents: false
+        }),
     ];
-
-    gulp.src(__dev.src.style + "*.scss")
-        .pipe(sass({
-                /***
-                * outputStyle {'nested':'嵌套','expanded':'展开','compact':'紧凑','compressed':'压缩'}
-                */
-                outputStyle: 'compact'
-        }).on('error', sass.logError))
+    gulp.src(__dev.src.style + "*.css")
         .pipe(postcss(processors))
         .pipe(gulp.dest(__dev.build.style));
 });
@@ -80,35 +76,22 @@ gulp.task('images', function() {
 })
 
 
-//var webpack = require('webpack'), webpackConfig = require('./webpack.config.js');
-
 gulp.task('javascript', function(callback) {
 	gulp.src(__dev.src.js + '**/*.*')
 	.pipe(gulp.dest(__dev.build.js));
-	// var __webpackConfig = Object.create(webpackConfig);
-	// webpack(__webpackConfig,function(err,stats) {
-	// 	callback()
-	// });
 });
 
 gulp.task('fonts', function(callback) {
 	gulp.src('./src/fonts/' + '*.*')
 	.pipe(gulp.dest('./build/public/fonts'));
-	// var __webpackConfig = Object.create(webpackConfig);
-	// webpack(__webpackConfig,function(err,stats) {
-	// 	callback()
-	// });
 });
-
-
-
 
 
 gulp.task('connect', function() {
     connect.server({
         root: __dev.build.html,
         port: __dev.port,
-        host: "192.168.3.38",
+        //host: "192.168.3.38",
         //host: "192.168.110.71",
         livereload: true,
         /*middleware: function(connect, opt) {
