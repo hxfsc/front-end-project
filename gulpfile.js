@@ -87,13 +87,12 @@ gulp.task('javascript', function() {
         input: __dev.src.js + "/main.js",
         plugins: [babel({
             exclude:"node_modules/**"
-        }), rollupUglify({
-            sourceMap: true
-        })]
+        }), rollupUglify()]
     }).then(bundle => {
         bundle.write({
             file: __dev.build.js + "/main.js",
-            format: "umd"
+            format: "umd",
+            sourcemap: true
         })
     })
 
@@ -139,7 +138,7 @@ gulp.task('reload', function () {
 
 gulp.task('watch', function () {
     gulp.watch(__dev.src.html + '**/*.html', ['html']);
-    gulp.watch(__dev.src.style + '**/*.scss',['style']);
+    gulp.watch(__dev.src.style + '**/*.css',['style']);
     gulp.watch(__dev.src.js + '**/*.js', ['javascript']);
 
     gulp.watch(__dev.build.style + '*.css',['reload']);
