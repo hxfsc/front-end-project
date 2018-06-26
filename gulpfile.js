@@ -8,7 +8,9 @@ var includeFile = require('gulp-file-include'),
     autoprefixer = require('autoprefixer'),
     cssnext = require('cssnext'),
     cssnano = require('cssnano'),
-    precss = require('precss');
+    precss = require('precss'),
+    rollup = require('rollup'),
+    babel = require('rollup-plugin-babel');
 
 
 var __srcPath = './src/';
@@ -76,12 +78,25 @@ gulp.task('images', function() {
 })
 
 
-gulp.task('javascript', function(callback) {
-	gulp.src(__dev.src.js + '**/*.*')
-	.pipe(gulp.dest(__dev.build.js));
+gulp.task('javascript', function() {
+	// gulp.src(__dev.src.js + '**/*.*')
+    // .pipe(gulp.dest(__dev.build.js));
+
+    rollup.rollup({
+        input: __dev.src.js + "/main.js",
+        plugins: [babel({
+            exclude:"node_modules/**"
+        })]
+    }).then(bundle => {
+        bundle.write({
+            file: __dev.build.js + "/main.js",
+            format: "umd"
+        })
+    })
+
 });
 
-gulp.task('fonts', function(callback) {
+gulp.task('fonts', function() {
 	gulp.src('./src/fonts/' + '*.*')
 	.pipe(gulp.dest('./build/public/fonts'));
 });

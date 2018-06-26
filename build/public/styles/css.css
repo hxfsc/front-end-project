@@ -1,1 +1,0 @@
-.wrap{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex}.wrap .item{-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1}.animate{-webkit-animation:abs 5s;animation:abs 5s}@-webkit-keyframes abs{10%{background:#000}20%{background:#055}}@keyframes abs{10%{background:#000}20%{background:#055}}

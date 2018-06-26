@@ -30,3 +30,10 @@ $RECYCLE.BIN/
 .DS_Store
 .AppleDouble
 .LSOverride
+
+src/
+build/
+
+yarn.lock
+yarn-error.log
+package-lock.json
