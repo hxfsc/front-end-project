@@ -24,6 +24,7 @@
     "http-proxy-middleware": "^0.18.0",
     "precss": "^3.1.2",
     "rollup": "^0.61.2",
-    "rollup-plugin-babel": "^3.0.5"
+    "rollup-plugin-babel": "^3.0.5",
+    "rollup-plugin-uglify": "^4.0.0"
   }
 }

@@ -10,6 +10,7 @@ var includeFile = require('gulp-file-include'),
     cssnano = require('cssnano'),
     precss = require('precss'),
     rollup = require('rollup'),
+    rollupUglify = require('rollup-plugin-uglify').uglify,
     babel = require('rollup-plugin-babel');
 
 
@@ -86,6 +87,8 @@ gulp.task('javascript', function() {
         input: __dev.src.js + "/main.js",
         plugins: [babel({
             exclude:"node_modules/**"
+        }), rollupUglify({
+            sourceMap: true
         })]
     }).then(bundle => {
         bundle.write({
