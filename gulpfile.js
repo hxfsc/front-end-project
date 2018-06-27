@@ -85,10 +85,11 @@ gulp.task("javascript", function() {
 			input: __dev.src.js + "/main.js",
 			plugins: [
 				babel({
-					exclude: "node_modules/**"
+                    exclude: "node_modules/**",
+                    //runtimeHelpers: true
 				}),
-				rollupUglify()
-			]
+				//rollupUglify()
+            ]
 		})
 		.then(function(bundle) {
 			bundle.write({
