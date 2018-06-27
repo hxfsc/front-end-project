@@ -10,9 +10,10 @@ var includeFile = require("gulp-file-include"),
 	cssnext = require("cssnext"),
 	cssnano = require("cssnano"),
 	precss = require("precss"),
-	rollup = require("rollup"),
-	rollupUglify = require("rollup-plugin-uglify").uglify,
-	babel = require("rollup-plugin-babel");
+    rollup = require("rollup"),
+    babel = require("rollup-plugin-babel"),
+    resolve = require("rollup-plugin-node-resolve"),
+    commonjs = require("rollup-plugin-commonjs");
 
 var __srcPath = "./src/";
 var __buildPath = "./build/";
@@ -76,28 +77,29 @@ gulp.task("images", function() {
 	gulp.src(__dev.src.images + "*.*").pipe(gulp.dest(__dev.build.images));
 });
 
-gulp.task("javascript", function() {
+gulp.task("javascript", async function() {
 	// gulp.src(__dev.src.js + '**/*.*')
-	// .pipe(gulp.dest(__dev.build.js));
+    // .pipe(gulp.dest(__dev.build.js));
 
-	rollup
-		.rollup({
-			input: __dev.src.js + "/main.js",
-			plugins: [
-				babel({
-                    exclude: "node_modules/**",
-                    //runtimeHelpers: true
-				}),
-				//rollupUglify()
-            ]
-		})
-		.then(function(bundle) {
-			bundle.write({
-				file: __dev.build.js + "/main.js",
-				format: "umd",
-				sourcemap: true
-			});
-		});
+    const bundle = await rollup.rollup({
+        input: __dev.src.js + "main.js",
+        plugins: [
+            resolve(),
+            commonjs({
+                include: 'node_modules/**'
+            }),
+            babel({
+                exclude: "node_modules/**",
+                "runtimeHelpers": true
+            })
+        ]
+    });
+
+    await bundle.write({
+        file: __dev.build.js + "main.js",
+        format: "umd",
+        sourcemap: true
+    });
 });
 
 gulp.task("fonts", function() {

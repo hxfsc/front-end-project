@@ -6,10 +6,10 @@
         "stage-0"
     ],
     "plugins": [
-        ["transform-runtime", {
+        ["transform-runtime",{
             "helpers": false,
             "polyfill": false,
-            "regenerator": false,
+            "regenerator": true,
             "moduleName": "babel-runtime"
         }],
         "external-helpers"
