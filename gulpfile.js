@@ -13,6 +13,7 @@ var includeFile = require("gulp-file-include"),
     rollup = require("rollup"),
     babel = require("rollup-plugin-babel"),
     resolve = require("rollup-plugin-node-resolve"),
+    px2rem = require('postcss-px2rem'),
     commonjs = require("rollup-plugin-commonjs");
 
 var __srcPath = "./src/";
@@ -59,7 +60,8 @@ gulp.task("style", function() {
 	var processors = [
 		precss,
 		cssnext,
-		autoprefixer({ browsers: [">1%", "last 12 version"] }),
+        autoprefixer({ browsers: [">1%", "last 12 version"] }),
+        px2rem({remUnit: 75}),
 		cssnano({
 			reduceIdents: false
 		})
@@ -116,15 +118,7 @@ gulp.task("connect", function() {
 		/*middleware: function(connect, opt) {
             return [
                 proxy('/client/getArticleList',  {
-                    target: 'http://www.opsmarttech.com',
-                    changeOrigin:true
-                }),
-                proxy('/client/getArticleInfo', {
-                    target: 'http://www.opsmarttech.com',
-                    changeOrigin:true
-                }),
-                proxy('/client/submitMsg', {
-                    target: 'http://www.opsmarttech.com',
+                    target: 'http://www.baidu.com',
                     changeOrigin:true
                 })
             ]
